@@ -11,6 +11,8 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "test", "test", "{EB9F6DAF-D
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "PocketMonsters.Integration", "test\PocketMonsters.Integration\PocketMonsters.Integration.csproj", "{13510CD8-0422-47A9-84A8-79968DC7149D}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "PocketMonsters.Tests", "test\PocketMonsters.Tests\PocketMonsters.Tests.csproj", "{EC9E98E3-F465-43E1-831B-1E1B3221213E}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -48,9 +50,22 @@ Global
 		{13510CD8-0422-47A9-84A8-79968DC7149D}.Release|x64.Build.0 = Release|Any CPU
 		{13510CD8-0422-47A9-84A8-79968DC7149D}.Release|x86.ActiveCfg = Release|Any CPU
 		{13510CD8-0422-47A9-84A8-79968DC7149D}.Release|x86.Build.0 = Release|Any CPU
+		{EC9E98E3-F465-43E1-831B-1E1B3221213E}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{EC9E98E3-F465-43E1-831B-1E1B3221213E}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{EC9E98E3-F465-43E1-831B-1E1B3221213E}.Debug|x64.ActiveCfg = Debug|Any CPU
+		{EC9E98E3-F465-43E1-831B-1E1B3221213E}.Debug|x64.Build.0 = Debug|Any CPU
+		{EC9E98E3-F465-43E1-831B-1E1B3221213E}.Debug|x86.ActiveCfg = Debug|Any CPU
+		{EC9E98E3-F465-43E1-831B-1E1B3221213E}.Debug|x86.Build.0 = Debug|Any CPU
+		{EC9E98E3-F465-43E1-831B-1E1B3221213E}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{EC9E98E3-F465-43E1-831B-1E1B3221213E}.Release|Any CPU.Build.0 = Release|Any CPU
+		{EC9E98E3-F465-43E1-831B-1E1B3221213E}.Release|x64.ActiveCfg = Release|Any CPU
+		{EC9E98E3-F465-43E1-831B-1E1B3221213E}.Release|x64.Build.0 = Release|Any CPU
+		{EC9E98E3-F465-43E1-831B-1E1B3221213E}.Release|x86.ActiveCfg = Release|Any CPU
+		{EC9E98E3-F465-43E1-831B-1E1B3221213E}.Release|x86.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(NestedProjects) = preSolution
 		{6B627B15-C7F9-4ECB-B03E-89378A0625D6} = {B9CCBC8B-77B6-43A6-81AB-7354198B2C1B}
 		{13510CD8-0422-47A9-84A8-79968DC7149D} = {EB9F6DAF-DAC7-4825-A4DF-7B6E95448BDE}
+		{EC9E98E3-F465-43E1-831B-1E1B3221213E} = {EB9F6DAF-DAC7-4825-A4DF-7B6E95448BDE}
 	EndGlobalSection
 EndGlobal
