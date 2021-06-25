@@ -1,4 +1,5 @@
 using System.Threading.Tasks;
+using LanguageExt;
 using Shouldly;
 using Xunit;
 
@@ -11,7 +12,7 @@ namespace PocketMonsters.Tests
         {
             var pokeDexService = new PokeDexService();
             var result = await pokeDexService.GetPokemonDetails("fake-mon");
-            result.ShouldBeNull();
+            result.ShouldBe(Option<PokemonDetails>.None);
         }
     }
 }
