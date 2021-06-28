@@ -348,3 +348,7 @@ MigrationBackup/
 
 # Ionide (cross platform F# VS Code tools) working folder
 .ionide/
+notes.txt
+.idea/.idea.PocketMonsters/.idea/vcs.xml
+.vscode/launch.json
+.vscode/tasks.json

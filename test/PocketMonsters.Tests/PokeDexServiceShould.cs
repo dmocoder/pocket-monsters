@@ -4,7 +4,7 @@ using System.Threading.Tasks;
 using Shouldly;
 using Moq;
 using PocketMonsters.PokeApi;
-using Serilog;
+using Microsoft.Extensions.Logging;
 
 namespace PocketMonsters.Tests
 {
@@ -16,7 +16,7 @@ namespace PocketMonsters.Tests
         public PokeDexServiceShould()
         {
             _pokeApiClient = new Mock<IPokeApiClient>();
-            _pokeDexService = new PokeDexService(_pokeApiClient.Object, Mock.Of<ILogger>());
+            _pokeDexService = new PokeDexService(_pokeApiClient.Object, Mock.Of<ILogger<PokeDexService>>());
         }
 
         [Fact]
@@ -95,13 +95,27 @@ namespace PocketMonsters.Tests
             var details = result.ShouldBeOfType<ActionFailed>();
         }
 
-        private static void SetupPokeApi(string pokemonName, Mock<IPokeApiClient> mock, string flavorText = "a default pokemon", bool isLegendary = false, string habitat = "caves")
+        [Fact]
+        public async Task ReturnNotFound_IfNoEnglishFlavorText()
+        {
+            //setup
+            var pokemonArg = "tommychu";
+            SetupPokeApi(pokemonArg, _pokeApiClient, language: "fr");
+
+            //act
+            var result = await _pokeDexService.GetPokemonDetails(pokemonArg);
+
+            //assert
+            var details = result.ShouldBeOfType<PokemonNotFound>();
+        }
+
+        private static void SetupPokeApi(string pokemonName, Mock<IPokeApiClient> mock, string flavorText = "a default pokemon", bool isLegendary = false, string habitat = "caves", string language = "en")
         {
             var pokemonSpeciesStub = new PokemonSpeciesResponse
             {
                 FlavorTextEntries = new []{ new FlavorTextEntry {
                     FlavorText = flavorText,
-                    Language = new Link{ Name = "uk"},
+                    Language = new Link{ Name = language},
                     Version = new Link{ Name = "best"}
                  }},
                  Habitat = new Link{ Name = habitat},

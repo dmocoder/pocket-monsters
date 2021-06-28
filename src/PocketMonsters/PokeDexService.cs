@@ -36,23 +36,18 @@ namespace PocketMonsters
             }
         }
 
-        private PokemonDetails Map(string name, PokemonSpeciesResponse speciesResponse)
+        private IPokemonDetailsResponse Map(string name, PokemonSpeciesResponse speciesResponse)
         {
+            if (!FlavorTextMapper.TryMap(speciesResponse?.FlavorTextEntries, out var flavorText))
+                return new PokemonNotFound();
+                
             return new PokemonDetails
             {
                 Name = name,
-                Description = MapFlavorText(speciesResponse.FlavorTextEntries[0].FlavorText),
+                Description = flavorText,
                 Habitat = speciesResponse.Habitat.Name,
                 IsLegendary = speciesResponse.IsLegendary ?? false
             };
-        }
-
-        private static string MapFlavorText(string flavorText)
-        {
-            if (string.IsNullOrEmpty(flavorText))
-                throw new ArgumentException("Flavor text cannot be null or empty", nameof(flavorText));
-
-            return flavorText.Replace("\n", " ").Trim(); 
         }
     }
 }
