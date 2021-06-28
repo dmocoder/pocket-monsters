@@ -11,6 +11,7 @@ using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
 using Microsoft.OpenApi.Models;
+using PocketMonsters.PokeApi;
 
 namespace PocketMonsters
 {
@@ -32,6 +33,7 @@ namespace PocketMonsters
             {
                 c.SwaggerDoc("v1", new OpenApiInfo { Title = "PocketMonsters", Version = "v1" });
             });
+            services.AddHttpClient<PokeApiClient>();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
