@@ -21,11 +21,10 @@ namespace PocketMonsters.PokeApi
         HttpClient _httpClient;
         JsonSerializer _serializer;
 
-        public PokeApiClient(HttpClient httpClient, string baseAddress)
+        public PokeApiClient(HttpClient httpClient, PokeApiOptions options)
         {
             _httpClient = httpClient ?? throw new ArgumentNullException(nameof(httpClient));
-            
-            _httpClient.BaseAddress = new Uri(baseAddress);
+            _httpClient.BaseAddress = new Uri(options?.BaseUrl ?? throw new ArgumentNullException(nameof(options)));
             _serializer = JsonSerializer.Create(_serializerSettings);
         }
 

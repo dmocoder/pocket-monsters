@@ -33,7 +33,15 @@ namespace PocketMonsters
             {
                 c.SwaggerDoc("v1", new OpenApiInfo { Title = "PocketMonsters", Version = "v1" });
             });
+
+            var pokeApiOptions = new PokeApiOptions();
+            Configuration.GetSection("PokeApi").Bind(pokeApiOptions);
+            services.AddSingleton<PokeApiOptions>(pokeApiOptions);
+
+            //TODO: Revise this
             services.AddHttpClient<PokeApiClient>();
+            services.AddSingleton<IPokeApiClient, PokeApiClient>();
+            services.AddSingleton<IPokeDexService, PokeDexService>();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.

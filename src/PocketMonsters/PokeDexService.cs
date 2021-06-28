@@ -1,7 +1,5 @@
-using System.Net.Http;
 using System.Threading.Tasks;
 using System;
-using LanguageExt;
 using PocketMonsters.PokeApi;
 
 namespace PocketMonsters
@@ -15,22 +13,48 @@ namespace PocketMonsters
             _pokeApiClient = pokeApiClient ?? throw new ArgumentNullException(nameof(pokeApiClient));
         }
         
-        public Task<Option<PokemonDetails>> GetPokemonDetails(string pokemonName)
+        public async Task<IPokemonDetailsResponse> GetPokemonDetails(string pokemonName)
         {
-            return Task.FromResult(Option<PokemonDetails>.None);
+            //TODO: if pokeapi returns not found - get the species from the name endpoint
+            try
+            {
+                switch(await _pokeApiClient.GetPokemonSpecies(pokemonName))
+                {
+                    case PokemonSpeciesNotFoundResponse:
+                        return new PokemonNotFound();
+                    case PokemonSpeciesResponse species:
+                        return Map(pokemonName, species);
+                } 
+            }
+            catch
+            { }
+
+            return new PokemonNotFound();
+        }
+
+        private PokemonDetails Map(string name, PokemonSpeciesResponse speciesResponse)
+        {
+            return new PokemonDetails
+            {
+                Name = name,
+                Description = MapFlavorText(speciesResponse.FlavorTextEntries[0].FlavorText),
+                Habitat = speciesResponse.Habitat.Name,
+                IsLegendary = speciesResponse.IsLegendary ?? false
+            };
+        }
+
+        private static string MapFlavorText(string flavorText)
+        {
+            if (string.IsNullOrEmpty(flavorText))
+                throw new ArgumentException("Flavor text cannot be null or empty", nameof(flavorText));
+
+            return flavorText.Replace("\n", " ").Trim(); 
         }
     }
 
-    public interface IPokeDexService
-    {
-        Task<Option<PokemonDetails>> GetPokemonDetails(string pokemonName);
-    }
+    public interface IPokemonDetailsResponse 
+    { }
 
-    public record PokemonDetails
-    {
-        public string Name { get; init; }
-        public string Description { get; init; }
-        public string Habitat { get; init; }
-        public bool IsLegendary { get; init; }
-    }
+    public record PokemonNotFound : IPokemonDetailsResponse
+    { }
 }

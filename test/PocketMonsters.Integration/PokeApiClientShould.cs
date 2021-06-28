@@ -7,10 +7,12 @@ namespace PocketMonsters.Integration
 {
     public class PokeApiClientShould
     {
+        PokeApiOptions _options = new PokeApiOptions{ BaseUrl = @"https://pokeapi.co/api/v2/pokemon-species/" };
+
         [Fact]
         public async Task ReturnNotFound_WhenPokemonDoesNotExist()
         {
-            var pokeApiClient = new PokeApiClient(new System.Net.Http.HttpClient(), @"https://pokeapi.co/api/v2/pokemon-species/");
+            var pokeApiClient = new PokeApiClient(new System.Net.Http.HttpClient(), _options);
 
             var response = await pokeApiClient.GetPokemonSpecies("danchu");
 
@@ -20,7 +22,7 @@ namespace PocketMonsters.Integration
         [Fact]
         public async Task ReturnPokemonSpecies_WithHabitat_WhenPokemonDoesExist()
         {
-            var pokeApiClient = new PokeApiClient(new System.Net.Http.HttpClient(), @"https://pokeapi.co/api/v2/pokemon-species/");
+            var pokeApiClient = new PokeApiClient(new System.Net.Http.HttpClient(), _options);
 
             var response = await pokeApiClient.GetPokemonSpecies("charmander");
 
@@ -31,7 +33,7 @@ namespace PocketMonsters.Integration
         [Fact]
         public async Task ReturnPokemonSpecies_WithFlavorText_WhenPokemonDoesExist()
         {
-            var pokeApiClient = new PokeApiClient(new System.Net.Http.HttpClient(), @"https://pokeapi.co/api/v2/pokemon-species/");
+            var pokeApiClient = new PokeApiClient(new System.Net.Http.HttpClient(), _options);
 
             var response = await pokeApiClient.GetPokemonSpecies("charmander");
 
