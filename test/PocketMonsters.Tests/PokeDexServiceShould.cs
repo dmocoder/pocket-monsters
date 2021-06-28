@@ -1,8 +1,10 @@
 using Xunit;
+using System;
 using System.Threading.Tasks;
 using Shouldly;
 using Moq;
 using PocketMonsters.PokeApi;
+using Serilog;
 
 namespace PocketMonsters.Tests
 {
@@ -14,7 +16,7 @@ namespace PocketMonsters.Tests
         public PokeDexServiceShould()
         {
             _pokeApiClient = new Mock<IPokeApiClient>();
-            _pokeDexService = new PokeDexService(_pokeApiClient.Object);
+            _pokeDexService = new PokeDexService(_pokeApiClient.Object, Mock.Of<ILogger>());
         }
 
         [Fact]
@@ -111,6 +113,21 @@ namespace PocketMonsters.Tests
             //assert
             var details = result.ShouldBeOfType<PokemonDetails>();
             details.Habitat.ShouldBe(habitat);
+        }
+
+        [Fact]
+        public async Task ReturnActionFailed_IfPokeApiThrows()
+        {
+            //setup
+            var pokemonArg = "irrelevant";
+            _pokeApiClient.Setup(x => x.GetPokemonSpecies(pokemonArg))
+                .Throws(new Exception("team rocket error"));
+
+            //act
+            var result = await _pokeDexService.GetPokemonDetails(pokemonArg);
+
+            //assert
+            var details = result.ShouldBeOfType<ActionFailed>();
         }
     }
 }
