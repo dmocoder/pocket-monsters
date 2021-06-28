@@ -1,18 +1,25 @@
 using System.Net;
+using System.Net.Http;
 using Xunit;
 using Microsoft.AspNetCore.TestHost;
 using System.Threading.Tasks;
-using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.Extensions.Hosting;
 using Shouldly;
 
 namespace PocketMonsters.Integration 
 {
-    public class PokemonControllerShould
+    public class PokemonControllerShould //: IAsyncLifetime
     {
-        [Fact]
-        public async Task Return404_WhenSuppliedNonPokemon()
+        /*
+        private HttpClient _client;
+
+        public Task DisposeAsync()
+        {
+            return Task.CompletedTask;
+        }
+
+        public async Task InitializeAsync()
         {
             var hostBuilder = new HostBuilder()
                 .ConfigureWebHost(wh =>
@@ -22,15 +29,25 @@ namespace PocketMonsters.Integration
                 });
 
             var host = await hostBuilder.StartAsync();
-            var client = host.GetTestClient();
+            _client = host.GetTestClient();        
+        }
+        
+        [Fact]
+        public async Task Return404_WhenSuppliedNonPokemon()
+        {
+            (await _client.GetAsync("/pokemon/fakemon")).StatusCode.ShouldBe(HttpStatusCode.NotFound);
+        }
 
-            var response = await client.GetAsync("/pokemon/fakemon");
-
-            response.StatusCode.ShouldBe(HttpStatusCode.NotFound);
+        [Fact]
+        public async Task Return422_WhenSuppliedBadPokemon()
+        {
+            (await _client.GetAsync("$quirt!e"))
+                .StatusCode.ShouldBe(HttpStatusCode.BadRequest);
         }
 
         public async Task Return500_WhenPokeApiUnavailable() { }
 
         public async Task ReturnPokemon_WhenSuppliedValidPokemon(){ }
+        */
     }
 }

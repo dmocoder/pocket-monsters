@@ -1,6 +1,7 @@
 using System;
 using Microsoft.AspNetCore.Mvc;
 using System.Threading.Tasks;
+using System.Text.RegularExpressions;
 
 namespace PocketMonsters
 {
@@ -9,6 +10,7 @@ namespace PocketMonsters
     public class PokemonController : ControllerBase
     {
         IPokeDexService _pokeDexService;
+        private static Regex _pokemonRegex = new Regex("^[A-Za-z-]+$", RegexOptions.Compiled); 
 
         public PokemonController(IPokeDexService pokeDexService)
         {
@@ -18,8 +20,10 @@ namespace PocketMonsters
         [HttpGet("{pokemonName}")]
         public async Task<IActionResult> GetPokemon([FromRoute] string pokemonName)
         {
-            //TODO: Add validation for name i.e. force to lowercase, return 422
-            switch(await _pokeDexService.GetPokemonDetails(pokemonName))
+            if(!_pokemonRegex.IsMatch(pokemonName))
+                return new BadRequestObjectResult("Pokemon name invalid");
+
+            switch(await _pokeDexService.GetPokemonDetails(pokemonName.ToLowerInvariant()))
             {
                 case PokemonNotFound notFound:
                     return new NotFoundResult();

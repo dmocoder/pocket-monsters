@@ -1,7 +1,7 @@
 using System.Threading.Tasks;
 using System;
 using PocketMonsters.PokeApi;
-using Serilog;
+using Microsoft.Extensions.Logging;
 
 namespace PocketMonsters
 {
@@ -10,7 +10,7 @@ namespace PocketMonsters
         IPokeApiClient _pokeApiClient;
         ILogger _logger;
 
-        public PokeDexService(IPokeApiClient pokeApiClient, ILogger logger)
+        public PokeDexService(IPokeApiClient pokeApiClient, ILogger<PokeDexService> logger)
         {   
             _pokeApiClient = pokeApiClient ?? throw new ArgumentNullException(nameof(pokeApiClient));
             _logger = logger ?? throw new ArgumentNullException(nameof(logger));
@@ -31,7 +31,7 @@ namespace PocketMonsters
             }
             catch (Exception ex)
             {
-                _logger.Error("An error occurred retrieving details for {PokemonName}", ex, pokemonName);
+                _logger.LogError("An error occurred retrieving details for {PokemonName}", ex, pokemonName);
                 return new ActionFailed();
             }
         }
