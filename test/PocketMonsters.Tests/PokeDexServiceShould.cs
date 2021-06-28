@@ -38,20 +38,9 @@ namespace PocketMonsters.Tests
         {
             //setup
             var pokemonArg = "coder-chu";
-            var pokemonSpeciesStub = new PokemonSpeciesResponse
-            {
-                FlavorTextEntries = new []{ new FlavorTextEntry {
-                    FlavorText = "a really cool\nkind of dude\n",
-                    Language = new Link{ Name = "uk"},
-                    Version = new Link{ Name = "best"}
-                 }},
-                 Habitat = new Link{ Name = "desk"},
-                 IsLegendary = true
-            };
-
-            _pokeApiClient.Setup(x => x.GetPokemonSpecies(pokemonArg))
-                .ReturnsAsync(pokemonSpeciesStub);
-
+            var flavorText = "a really cool\nkind of dude\n";
+            SetupPokeApi(pokemonArg, _pokeApiClient, flavorText: flavorText);
+            
             //act
             var result = await _pokeDexService.GetPokemonDetails(pokemonArg);
 
@@ -65,19 +54,7 @@ namespace PocketMonsters.Tests
         {
             //setup
             var pokemonArg = "hitmondan";
-            var pokemonSpeciesStub = new PokemonSpeciesResponse
-            {
-                FlavorTextEntries = new []{ new FlavorTextEntry {
-                    FlavorText = "A pretty useless Pokemon at best.",
-                    Language = new Link{ Name = "uk"},
-                    Version = new Link{ Name = "best"}
-                 }},
-                 Habitat = new Link{ Name = "desk"},
-                 IsLegendary = true
-            };
-
-            _pokeApiClient.Setup(x => x.GetPokemonSpecies(pokemonArg))
-                .ReturnsAsync(pokemonSpeciesStub);
+            SetupPokeApi(pokemonArg, _pokeApiClient, isLegendary: true);
 
             //act
             var result = await _pokeDexService.GetPokemonDetails(pokemonArg);
@@ -93,19 +70,7 @@ namespace PocketMonsters.Tests
             //setup
             var pokemonArg = "hipstermon";
             var habitat = "cafe";
-            var pokemonSpeciesStub = new PokemonSpeciesResponse
-            {
-                FlavorTextEntries = new []{ new FlavorTextEntry {
-                    FlavorText = "A Pokemon that consumes far too much caffeine.",
-                    Language = new Link{ Name = "uk"},
-                    Version = new Link{ Name = "best"}
-                 }},
-                 Habitat = new Link{ Name = habitat },
-                 IsLegendary = false
-            };
-
-            _pokeApiClient.Setup(x => x.GetPokemonSpecies(pokemonArg))
-                .ReturnsAsync(pokemonSpeciesStub);
+            SetupPokeApi(pokemonArg, _pokeApiClient, habitat: habitat);
 
             //act
             var result = await _pokeDexService.GetPokemonDetails(pokemonArg);
@@ -128,6 +93,23 @@ namespace PocketMonsters.Tests
 
             //assert
             var details = result.ShouldBeOfType<ActionFailed>();
+        }
+
+        private static void SetupPokeApi(string pokemonName, Mock<IPokeApiClient> mock, string flavorText = "a default pokemon", bool isLegendary = false, string habitat = "caves")
+        {
+            var pokemonSpeciesStub = new PokemonSpeciesResponse
+            {
+                FlavorTextEntries = new []{ new FlavorTextEntry {
+                    FlavorText = flavorText,
+                    Language = new Link{ Name = "uk"},
+                    Version = new Link{ Name = "best"}
+                 }},
+                 Habitat = new Link{ Name = habitat},
+                 IsLegendary = isLegendary
+            };
+
+            mock.Setup(x => x.GetPokemonSpecies(pokemonName))
+                .ReturnsAsync(pokemonSpeciesStub);
         }
     }
 }
