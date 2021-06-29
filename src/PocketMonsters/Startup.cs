@@ -12,6 +12,7 @@ using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
 using Microsoft.OpenApi.Models;
 using PocketMonsters.PokeApi;
+using PocketMonsters.TranslateApi;
 
 namespace PocketMonsters
 {
@@ -36,12 +37,21 @@ namespace PocketMonsters
 
             var pokeApiOptions = new PokeApiOptions();
             Configuration.GetSection("PokeApi").Bind(pokeApiOptions);
-            services.AddSingleton<PokeApiOptions>(pokeApiOptions);
+            services.AddSingleton(pokeApiOptions);
 
+            var translateApiOptions = new TranslateApiOptions();
+            Configuration.GetSection("TranslateApi").Bind(translateApiOptions);
+            services.AddSingleton(translateApiOptions);
+            
             //TODO: Revise this
             services.AddHttpClient<PokeApiClient>();
             services.AddSingleton<IPokeApiClient, PokeApiClient>();
             services.AddSingleton<IPokeDexService, PokeDexService>();
+
+            services.AddHttpClient<FunTranslateApiClient>();
+            services.AddSingleton<FunTranslateApiClient>();
+            services.AddSingleton<IShakespeareTranslator>(x => x.GetRequiredService<FunTranslateApiClient>());
+            services.AddSingleton<IYodaTranslator>(x => x.GetRequiredService<FunTranslateApiClient>());
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
@@ -55,9 +65,7 @@ namespace PocketMonsters
             }
 
             app.UseHttpsRedirection();
-
             app.UseRouting();
-
             app.UseAuthorization();
 
             app.UseEndpoints(endpoints =>
