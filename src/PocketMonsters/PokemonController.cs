@@ -25,13 +25,8 @@ namespace PocketMonsters
             if (!PokemonRegex.IsMatch(pokemonName))
                 return new BadRequestObjectResult("Pokemon name invalid");
 
-            switch (await _pokeDexService.GetPokemonDetails(pokemonName.ToLowerInvariant()))
-            {
-                case PokemonNotFound notFound:
-                    return new NotFoundResult();
-                case PokemonDetails details:
-                    return new OkObjectResult(details);
-            }
+            if (await _pokeDexService.GetPokemonDetails(pokemonName) is PokemonDetails pokemonDetails)
+                return new OkObjectResult(pokemonDetails);
 
             return new NotFoundResult();
         }
@@ -42,7 +37,7 @@ namespace PocketMonsters
             if (!PokemonRegex.IsMatch(pokemonName))
                 return new BadRequestObjectResult("Pokemon name invalid");
 
-            if (await _pokeDexService.GetPokemonDetails(pokemonName.ToLowerInvariant()) is PokemonDetails pokemonDetails)
+            if (await _pokeDexService.GetPokemonDetails(pokemonName) is PokemonDetails pokemonDetails)
             {
                 var translatedDescription =
                     await _pokemonTranslationService.TranslatePokemonDescription(pokemonDetails);

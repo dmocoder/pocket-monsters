@@ -18,13 +18,14 @@ namespace PocketMonsters
         
         public async Task<IPokemonDetailsResponse> GetPokemonDetails(string pokemonName)
         {
+            var correctedName = pokemonName.ToLowerInvariant();
             //TODO: if pokeapi returns not found - get the species from the name endpoint
             try
             {
-                switch(await _pokeApiClient.GetPokemonSpecies(pokemonName))
+                switch(await _pokeApiClient.GetPokemonSpecies(correctedName))
                 {
                     case PokemonSpeciesResponse species:
-                        return Map(pokemonName, species);
+                        return Map(correctedName, species);
                     default:
                         return new PokemonNotFound();
                 } 
@@ -36,7 +37,7 @@ namespace PocketMonsters
             }
         }
 
-        private IPokemonDetailsResponse Map(string name, PokemonSpeciesResponse speciesResponse)
+        private static IPokemonDetailsResponse Map(string name, PokemonSpeciesResponse speciesResponse)
         {
             if (!FlavorTextMapper.TryMap(speciesResponse?.FlavorTextEntries, out var flavorText))
                 return new PokemonNotFound();
