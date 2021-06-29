@@ -45,8 +45,8 @@ namespace PocketMonsters
             {
                 Name = name,
                 Description = flavorText,
-                Habitat = speciesResponse.Habitat.Name,
-                IsLegendary = speciesResponse.IsLegendary ?? false
+                Habitat = speciesResponse?.Habitat.Name,
+                IsLegendary = speciesResponse?.IsLegendary ?? false
             };
         }
     }

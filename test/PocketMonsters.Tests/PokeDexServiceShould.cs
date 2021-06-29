@@ -86,7 +86,7 @@ namespace PocketMonsters.Tests
             //setup
             var pokemonArg = "irrelevant";
             _pokeApiClient.Setup(x => x.GetPokemonSpecies(pokemonArg))
-                .Throws(new Exception("team rocket error"));
+                .ThrowsAsync(new Exception("team rocket error"));
 
             //act
             var result = await _pokeDexService.GetPokemonDetails(pokemonArg);
