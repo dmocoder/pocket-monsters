@@ -45,7 +45,7 @@ namespace PocketMonsters
             if (await _pokeDexService.GetPokemonDetails(pokemonName.ToLowerInvariant()) is PokemonDetails pokemonDetails)
             {
                 var translatedDescription =
-                    await _pokemonTranslationService.TranslatePokemonDescription(pokemonDetails.Description, pokemonDetails.Habitat, pokemonDetails.IsLegendary);
+                    await _pokemonTranslationService.TranslatePokemonDescription(pokemonDetails);
                 
                 return new OkObjectResult(MapTranslated(pokemonDetails, translatedDescription));
             }

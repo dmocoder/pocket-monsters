@@ -35,6 +35,8 @@ namespace PocketMonsters
                 c.SwaggerDoc("v1", new OpenApiInfo { Title = "PocketMonsters", Version = "v1" });
             });
 
+            services.AddMemoryCache();
+
             var pokeApiOptions = new PokeApiOptions();
             Configuration.GetSection("PokeApi").Bind(pokeApiOptions);
             services.AddSingleton(pokeApiOptions);

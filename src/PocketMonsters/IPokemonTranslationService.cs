@@ -4,6 +4,6 @@ namespace PocketMonsters
 {
     public interface IPokemonTranslationService
     {
-        Task<string> TranslatePokemonDescription(string description, string pokemonHabitat, bool isLegendary);
+        Task<string> TranslatePokemonDescription(PokemonDetails pokemonDetails);
     }
 }
