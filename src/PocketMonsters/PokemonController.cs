@@ -9,21 +9,23 @@ namespace PocketMonsters
     [Route("[controller]")]
     public class PokemonController : ControllerBase
     {
-        IPokeDexService _pokeDexService;
-        private static Regex _pokemonRegex = new Regex("^[A-Za-z-]+$", RegexOptions.Compiled); 
+        private readonly IPokeDexService _pokeDexService;
+        private readonly IPokemonTranslationService _pokemonTranslationService;
+        private static readonly Regex PokemonRegex = new Regex("^[A-Za-z-]+$", RegexOptions.Compiled);
 
-        public PokemonController(IPokeDexService pokeDexService)
+        public PokemonController(IPokeDexService pokeDexService, IPokemonTranslationService pokemonTranslationService)
         {
             _pokeDexService = pokeDexService ?? throw new ArgumentNullException(nameof(pokeDexService));
+            _pokemonTranslationService = pokemonTranslationService ?? throw new ArgumentNullException(nameof(pokemonTranslationService));
         }
 
         [HttpGet("{pokemonName}")]
         public async Task<IActionResult> GetPokemon([FromRoute] string pokemonName)
         {
-            if(!_pokemonRegex.IsMatch(pokemonName))
+            if (!PokemonRegex.IsMatch(pokemonName))
                 return new BadRequestObjectResult("Pokemon name invalid");
 
-            switch(await _pokeDexService.GetPokemonDetails(pokemonName.ToLowerInvariant()))
+            switch (await _pokeDexService.GetPokemonDetails(pokemonName.ToLowerInvariant()))
             {
                 case PokemonNotFound notFound:
                     return new NotFoundResult();
@@ -31,7 +33,35 @@ namespace PocketMonsters
                     return new OkObjectResult(details);
             }
 
-            return new NotFoundResult();    
+            return new NotFoundResult();
+        }
+
+        [HttpGet("translated/{pokemonName}")]
+        public async Task<IActionResult> GetTranslatedPokemon([FromRoute] string pokemonName)
+        {
+            if (!PokemonRegex.IsMatch(pokemonName))
+                return new BadRequestObjectResult("Pokemon name invalid");
+
+            if (await _pokeDexService.GetPokemonDetails(pokemonName.ToLowerInvariant()) is PokemonDetails pokemonDetails)
+            {
+                var translatedDescription =
+                    await _pokemonTranslationService.TranslatePokemonDescription(pokemonDetails.Description, pokemonDetails.Habitat, pokemonDetails.IsLegendary);
+                
+                return new OkObjectResult(MapTranslated(pokemonDetails, translatedDescription));
+            }
+
+            return new NotFoundResult();
+        }
+
+        private PokemonDetails MapTranslated(PokemonDetails originalDetails, string translatedDescription)
+        {
+            return new PokemonDetails
+            {
+                Name = originalDetails.Name,
+                Description = translatedDescription,
+                Habitat = originalDetails.Habitat,
+                IsLegendary = originalDetails.IsLegendary
+            };
         }
     }
 }

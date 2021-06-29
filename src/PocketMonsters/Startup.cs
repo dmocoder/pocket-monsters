@@ -52,6 +52,8 @@ namespace PocketMonsters
             services.AddSingleton<FunTranslateApiClient>();
             services.AddSingleton<IShakespeareTranslator>(x => x.GetRequiredService<FunTranslateApiClient>());
             services.AddSingleton<IYodaTranslator>(x => x.GetRequiredService<FunTranslateApiClient>());
+
+            services.AddSingleton<IPokemonTranslationService, PokemonTranslationService>();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.

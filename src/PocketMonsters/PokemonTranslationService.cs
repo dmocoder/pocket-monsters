@@ -4,7 +4,7 @@ using PocketMonsters.TranslateApi;
 
 namespace PocketMonsters
 {
-    public class PokemonTranslationService
+    public class PokemonTranslationService : IPokemonTranslationService
     {
         private readonly IShakespeareTranslator _shakespeareTranslator;
         private readonly IYodaTranslator _yodaTranslator;
