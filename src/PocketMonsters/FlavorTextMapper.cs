@@ -16,7 +16,10 @@ namespace PocketMonsters
             {
                 if(entry?.Language?.Name == "en")
                 {
-                    flavorText = entry.FlavorText.Replace("\n", " ").Trim();
+                    flavorText = entry.FlavorText
+                        .Replace("\n", " ")
+                        .Replace("\f", " ")
+                        .Trim();
                     return true;
                 } 
             }

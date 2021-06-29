@@ -23,6 +23,21 @@ namespace PocketMonsters.Tests
         }
 
         [Fact]
+        public void ReplaceFeedWithSpace()
+        {
+            //setup
+            var flavorTextEntry = new FlavorTextEntry
+            {
+                FlavorText = "i am\nacross many\ffeeds",
+                Language = new Link{Name = "en"}
+            };
+
+            //act & assert
+            FlavorTextMapper.TryMap(new[]{flavorTextEntry}, out var flavorText).ShouldBeTrue();
+            flavorText.ShouldBe("i am across many feeds");
+        }
+
+        [Fact]
         public void NotMap_WhenNoEnglishFlavorTextAvailable()
         {
             //setup
