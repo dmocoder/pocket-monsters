@@ -5,9 +5,10 @@ using PocketMonsters.PokeDex.PokeApi;
 
 namespace PocketMonsters.Integration 
 {
+    [Trait("Category","Integration")]    
     public class PokeApiClientShould
     {
-        PokeApiOptions _options = new PokeApiOptions{ BaseUrl = @"https://pokeapi.co/api/v2/pokemon-species/" };
+        private readonly PokeApiOptions _options = new PokeApiOptions{ BaseUrl = @"https://pokeapi.co/api/v2/pokemon-species/" };
 
         [Fact]
         public async Task ReturnNotFound_WhenPokemonDoesNotExist()

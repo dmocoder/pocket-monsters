@@ -6,16 +6,18 @@ using Xunit;
 
 namespace PocketMonsters.Integration
 {
+    [Trait("Category","Integration")]
+    [Trait("Category","RateLimited")]
     public class FunTranslateApiClientShould 
     {
-        TranslateApiOptions translateApiOptions = new TranslateApiOptions 
+        private readonly TranslateApiOptions translateApiOptions = new TranslateApiOptions 
         { 
             BaseUrl = "https://api.funtranslations.com/translate/",
             YodaEndpoint = "yoda.json",
             ShakespeareEndpoint = "shakespeare.json"
         };
 
-        FunTranslateApiClient _translateApi;
+        private readonly FunTranslateApiClient _translateApi;
 
         public FunTranslateApiClientShould()
         {

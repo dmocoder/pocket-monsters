@@ -9,6 +9,7 @@ using PocketMonsters.PokeDex.PokeApi;
 
 namespace PocketMonsters.Tests
 {
+    [Trait("Category", "Unit")]
     public class PokeDexServiceShould
     {
         private readonly Mock<IPokeApiClient> _pokeApiClient;

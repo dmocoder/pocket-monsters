@@ -8,6 +8,7 @@ using Shouldly;
 
 namespace PocketMonsters.Integration 
 {
+    [Trait("Category","Integration")]
     public class HealthControllerShould
     {
         [Fact]

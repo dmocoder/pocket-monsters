@@ -16,6 +16,7 @@ using Shouldly;
 
 namespace PocketMonsters.Integration 
 {
+    [Trait("Category","Integration")]
     public class PokemonControllerShould : IAsyncLifetime
     {
         private HttpClient _client;

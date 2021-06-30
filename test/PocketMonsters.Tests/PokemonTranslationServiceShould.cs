@@ -11,6 +11,7 @@ using Xunit;
 
 namespace PocketMonsters.Tests
 {
+    [Trait("Category", "Unit")]
     public class PokemonTranslationServiceShould
     {
         private readonly PokemonTranslationService _translationService;
