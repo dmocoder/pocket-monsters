@@ -1,6 +1,6 @@
 using System.Net.Http;
 using System.Threading.Tasks;
-using PocketMonsters.TranslateApi;
+using PocketMonsters.PokemonTranslation.TranslateApi;
 using Shouldly;
 using Xunit;
 

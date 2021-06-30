@@ -1,7 +1,7 @@
 using System;
 using System.Threading.Tasks;
 using Microsoft.Extensions.Logging;
-using PocketMonsters.PokeApi;
+using PocketMonsters.PokeDex.PokeApi;
 
 namespace PocketMonsters.PokeDex
 {

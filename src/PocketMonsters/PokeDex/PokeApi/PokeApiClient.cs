@@ -1,12 +1,12 @@
 using System;
+using System.IO;
 using System.Net;
 using System.Net.Http;
 using System.Threading.Tasks;
 using Newtonsoft.Json;
-using System.IO;
 using Newtonsoft.Json.Serialization;
 
-namespace PocketMonsters.PokeApi
+namespace PocketMonsters.PokeDex.PokeApi
 {
     public class PokeApiClient : IPokeApiClient
     {

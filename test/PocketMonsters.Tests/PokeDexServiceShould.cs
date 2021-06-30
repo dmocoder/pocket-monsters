@@ -3,9 +3,9 @@ using System;
 using System.Threading.Tasks;
 using Shouldly;
 using Moq;
-using PocketMonsters.PokeApi;
 using Microsoft.Extensions.Logging;
 using PocketMonsters.PokeDex;
+using PocketMonsters.PokeDex.PokeApi;
 
 namespace PocketMonsters.Tests
 {

@@ -1,4 +1,4 @@
-namespace PocketMonsters.TranslateApi
+namespace PocketMonsters.PokemonTranslation.TranslateApi
 {
     public class TranslateApiOptions
     {

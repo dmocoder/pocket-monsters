@@ -10,8 +10,8 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Newtonsoft.Json.Linq;
-using PocketMonsters.PokeApi;
-using PocketMonsters.TranslateApi;
+using PocketMonsters.PokeDex.PokeApi;
+using PocketMonsters.PokemonTranslation.TranslateApi;
 using Shouldly;
 
 namespace PocketMonsters.Integration 

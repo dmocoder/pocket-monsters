@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Serialization;
 
-namespace PocketMonsters.TranslateApi 
+namespace PocketMonsters.PokemonTranslation.TranslateApi 
 {
     public class FunTranslateApiClient : IShakespeareTranslator, IYodaTranslator
     {

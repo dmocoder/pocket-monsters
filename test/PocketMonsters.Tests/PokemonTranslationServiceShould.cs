@@ -4,7 +4,8 @@ using Microsoft.Extensions.Caching.Memory;
 using Microsoft.Extensions.Logging;
 using Moq;
 using PocketMonsters.PokeDex;
-using PocketMonsters.TranslateApi;
+using PocketMonsters.PokemonTranslation;
+using PocketMonsters.PokemonTranslation.TranslateApi;
 using Shouldly;
 using Xunit;
 

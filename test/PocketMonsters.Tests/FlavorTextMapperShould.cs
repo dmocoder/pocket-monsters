@@ -1,8 +1,8 @@
 using Xunit;
 using Shouldly;
-using PocketMonsters.PokeApi;
 using System;
 using PocketMonsters.PokeDex;
+using PocketMonsters.PokeDex.PokeApi;
 
 namespace PocketMonsters.Tests
 {

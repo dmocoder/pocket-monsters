@@ -1,6 +1,6 @@
 using System.Net;
 
-namespace PocketMonsters.PokeApi
+namespace PocketMonsters.PokeDex.PokeApi
 {
     public record UnsuccessfulResponse : IPokeApiClientResponse
     {

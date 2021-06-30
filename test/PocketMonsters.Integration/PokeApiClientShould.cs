@@ -1,7 +1,7 @@
 using Xunit;
 using Shouldly;
 using System.Threading.Tasks;
-using PocketMonsters.PokeApi;
+using PocketMonsters.PokeDex.PokeApi;
 
 namespace PocketMonsters.Integration 
 {

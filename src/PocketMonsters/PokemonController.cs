@@ -4,6 +4,7 @@ using System.Threading.Tasks;
 using System.Text.RegularExpressions;
 using Microsoft.Extensions.Logging;
 using PocketMonsters.PokeDex;
+using PocketMonsters.PokemonTranslation;
 
 namespace PocketMonsters
 {

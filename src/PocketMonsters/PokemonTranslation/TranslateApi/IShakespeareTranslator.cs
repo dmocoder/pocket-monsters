@@ -1,6 +1,6 @@
 using System.Threading.Tasks;
 
-namespace PocketMonsters.TranslateApi
+namespace PocketMonsters.PokemonTranslation.TranslateApi
 {
     public interface IShakespeareTranslator
     {

@@ -1,5 +1,5 @@
 using System.Collections.Generic;
-using PocketMonsters.PokeApi;
+using PocketMonsters.PokeDex.PokeApi;
 
 namespace PocketMonsters.PokeDex
 {

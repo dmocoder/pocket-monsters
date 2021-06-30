@@ -1,6 +1,6 @@
 using System.Threading.Tasks;
 
-namespace PocketMonsters.PokeApi
+namespace PocketMonsters.PokeDex.PokeApi
 {
     public interface IPokeApiClient
     {

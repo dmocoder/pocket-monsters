@@ -5,9 +5,10 @@ using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
 using Microsoft.OpenApi.Models;
-using PocketMonsters.PokeApi;
 using PocketMonsters.PokeDex;
-using PocketMonsters.TranslateApi;
+using PocketMonsters.PokeDex.PokeApi;
+using PocketMonsters.PokemonTranslation;
+using PocketMonsters.PokemonTranslation.TranslateApi;
 
 namespace PocketMonsters
 {

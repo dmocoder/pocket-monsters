@@ -2,9 +2,9 @@ using System;
 using System.Threading.Tasks;
 using Microsoft.Extensions.Caching.Memory;
 using Microsoft.Extensions.Logging;
-using PocketMonsters.TranslateApi;
+using PocketMonsters.PokemonTranslation.TranslateApi;
 
-namespace PocketMonsters
+namespace PocketMonsters.PokemonTranslation
 {
     public class PokemonTranslationService : IPokemonTranslationService
     {

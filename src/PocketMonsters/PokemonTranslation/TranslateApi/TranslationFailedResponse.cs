@@ -1,4 +1,4 @@
-namespace PocketMonsters.TranslateApi
+namespace PocketMonsters.PokemonTranslation.TranslateApi
 {
     public record TranslationFailedResponse : ITranslateResponse 
     { 
