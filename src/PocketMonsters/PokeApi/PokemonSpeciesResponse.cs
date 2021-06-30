@@ -1,5 +1,3 @@
-using System.Collections.Generic;
-
 namespace PocketMonsters.PokeApi
 {
     public record PokemonSpeciesResponse : IPokeApiClientResponse
