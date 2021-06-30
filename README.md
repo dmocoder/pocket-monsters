@@ -82,3 +82,6 @@ The Api Health checks currently only test that the Api is running. Realistically
 
 #### TLS Signing
 The Api uses HTTPS developer certificates and for a production application a better solution should be setup.
+
+#### Add a Simulator
+Currently tests call into the actual PokeApi and Translation services. It might be better long term to introduce a simulator that mocks their responses.
