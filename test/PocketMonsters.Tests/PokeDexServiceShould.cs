@@ -1,6 +1,8 @@
 using Xunit;
 using System;
+using System.Net;
 using System.Threading.Tasks;
+using Microsoft.AspNetCore.Http;
 using Shouldly;
 using Moq;
 using Microsoft.Extensions.Logging;
@@ -29,7 +31,7 @@ namespace PocketMonsters.Tests
                 .ReturnsAsync(new PokemonSpeciesNotFoundResponse());
 
             //act
-            var result = await _pokeDexService.GetPokemonDetails("fake-mon");
+            var result = await _pokeDexService.GetPokemonDetails("no-pokemon");
 
             //assert
             result.ShouldBeOfType<PokemonNotFound>();
@@ -83,7 +85,7 @@ namespace PocketMonsters.Tests
         }
 
         [Fact]
-        public async Task ReturnActionFailed_IfPokeApiThrows()
+        public async Task ReturnGetPokemonDetailsFailed_IfPokeApiThrows()
         {
             //setup
             var pokemonArg = "irrelevant";
@@ -94,7 +96,22 @@ namespace PocketMonsters.Tests
             var result = await _pokeDexService.GetPokemonDetails(pokemonArg);
 
             //assert
-            var details = result.ShouldBeOfType<GetPokemonDetailsFailed>();
+            result.ShouldBeOfType<GetPokemonDetailsFailed>();
+        }
+        
+        [Fact]
+        public async Task ReturnGetPokemonDetailsFailed_IfPokeApiReturns429()
+        {
+            //setup
+            var pokemonArg = "irrelevant";
+            _pokeApiClient.Setup(x => x.GetPokemonSpecies(pokemonArg))
+                .ReturnsAsync(new UnsuccessfulResponse {HttpStatusCode = HttpStatusCode.TooManyRequests});
+
+            //act
+            var result = await _pokeDexService.GetPokemonDetails(pokemonArg);
+
+            //assert
+            result.ShouldBeOfType<GetPokemonDetailsFailed>();
         }
 
         [Fact]

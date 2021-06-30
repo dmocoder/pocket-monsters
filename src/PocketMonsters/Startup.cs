@@ -5,10 +5,6 @@ using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
 using Microsoft.OpenApi.Models;
-using PocketMonsters.PokeDex;
-using PocketMonsters.PokeDex.PokeApi;
-using PocketMonsters.PokemonTranslation;
-using PocketMonsters.PokemonTranslation.TranslateApi;
 
 namespace PocketMonsters
 {
@@ -31,26 +27,8 @@ namespace PocketMonsters
                 c.SwaggerDoc("v1", new OpenApiInfo { Title = "PocketMonsters", Version = "v1" });
             });
 
-            services.AddMemoryCache();
-
-            var pokeApiOptions = new PokeApiOptions();
-            Configuration.GetSection("PokeApi").Bind(pokeApiOptions);
-            services.AddSingleton(pokeApiOptions);
-
-            var translateApiOptions = new TranslateApiOptions();
-            Configuration.GetSection("TranslateApi").Bind(translateApiOptions);
-            services.AddSingleton(translateApiOptions);
-            
-            //TODO: Revise this
-            services.AddHttpClient<PokeApiClient>();
-            services.AddSingleton<IPokeApiClient, PokeApiClient>();
-            services.AddSingleton<IPokeDexService, PokeDexService>();
-
-            services.AddHttpClient<FunTranslateApiClient>();
-            services.AddSingleton<FunTranslateApiClient>();
-            services.AddSingleton<IShakespeareTranslator>(x => x.GetRequiredService<FunTranslateApiClient>());
-            services.AddSingleton<IYodaTranslator>(x => x.GetRequiredService<FunTranslateApiClient>());
-            services.AddSingleton<IPokemonTranslationService, PokemonTranslationService>();
+            services.RegisterPokeDex(Configuration);
+            services.RegisterPokemonTranslator(Configuration);
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
@@ -62,7 +40,12 @@ namespace PocketMonsters
             {
                 app.UseDeveloperExceptionPage();
                 app.UseSwagger();
-                app.UseSwaggerUI(c => c.SwaggerEndpoint("/swagger/v1/swagger.json", "PocketMonsters v1"));
+                app.UseSwaggerUI(
+                    c =>
+                    {
+                        c.SwaggerEndpoint("/swagger/v1/swagger.json", "PocketMonsters v1");
+                        c.SwaggerEndpoint("/swagger/v1/swagger.json", "PocketMonsters v1");
+                    });
             }
 
             app.UseHttpsRedirection();

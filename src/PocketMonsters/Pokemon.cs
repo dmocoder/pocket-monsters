@@ -9,7 +9,7 @@ namespace PocketMonsters
         public string Habitat { get; init; }
         public bool IsLegendary { get; init; }
 
-        public string Version => "1.0.0"; 
+        public string ApiVersion => "v1"; 
         
         public Pokemon()
         { }

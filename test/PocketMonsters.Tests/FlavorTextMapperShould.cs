@@ -73,7 +73,5 @@ namespace PocketMonsters.Tests
             //setup, act & assert
             FlavorTextMapper.TryMap(Array.Empty<FlavorTextEntry>(), out var _).ShouldBeFalse();
         }
-
-        //TODO: Respect ordering so that misordered arrays will return the same.
     } 
 }

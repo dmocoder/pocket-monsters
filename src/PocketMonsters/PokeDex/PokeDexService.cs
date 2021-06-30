@@ -27,23 +27,26 @@ namespace PocketMonsters.PokeDex
         public async Task<IPokemonDetailsResponse> GetPokemonDetails(string pokemonName)
         {
             var correctedName = pokemonName.ToLowerInvariant();
-            //TODO: if pokeapi returns not found - get the species from the name endpoint
+            
             try
             {
                 switch(await _pokeApiClient.GetPokemonSpecies(correctedName))
                 {
                     case PokemonSpeciesResponse species:
                         return Map(correctedName, species);
+                    case PokemonSpeciesNotFoundResponse:
+                    {
+                        _logger.LogWarning("{PokemonName} details not found", pokemonName);
+                        return new PokemonNotFound();
+                    }
                     case UnsuccessfulResponse unsuccessful:
                     {
                         _logger.LogError("Unable to retrieve pokemon details for {PokemonName}: {HttpErrorCode}", 
-                            pokemonName, 
-                            unsuccessful.HttpStatusCode);
-                        return new PokemonNotFound();
+                            pokemonName, unsuccessful.HttpStatusCode);
+                        return new GetPokemonDetailsFailed();
                     }
-                    case PokemonSpeciesNotFoundResponse notFound:
                     default:
-                        return new PokemonNotFound();
+                        return new GetPokemonDetailsFailed();
                 } 
             }
             catch (Exception ex)
