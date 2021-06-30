@@ -1,6 +1,6 @@
 using System.Threading.Tasks;
 
-namespace PocketMonsters
+namespace PocketMonsters.PokeDex
 {
     public interface IPokeDexService
     {

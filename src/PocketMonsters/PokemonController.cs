@@ -3,6 +3,7 @@ using Microsoft.AspNetCore.Mvc;
 using System.Threading.Tasks;
 using System.Text.RegularExpressions;
 using Microsoft.Extensions.Logging;
+using PocketMonsters.PokeDex;
 
 namespace PocketMonsters
 {
@@ -33,7 +34,7 @@ namespace PocketMonsters
             var detailsResponse = await _pokeDexService.GetPokemonDetails(pokemonName);
             
             if(detailsResponse is PokemonDetails pokemonDetails)
-                return new OkObjectResult(pokemonDetails);
+                return new OkObjectResult(new Pokemon(pokemonDetails));
 
             //ideally a failure such as this would return something more descriptive or a failed/success flag in the body
             //however this might require adapting the happy-path body in the spec
@@ -54,7 +55,7 @@ namespace PocketMonsters
             if (await _pokeDexService.GetPokemonDetails(pokemonName) is PokemonDetails pokemonDetails)
             {
                 var translatedDescription =
-                    await _pokemonTranslationService.TranslatePokemonDescription(pokemonDetails);
+                    await _pokemonTranslationService.TranslatePokemonDescription(new Pokemon(pokemonDetails));
                 
                 return new OkObjectResult(MapTranslated(pokemonDetails, translatedDescription));
             }

@@ -3,6 +3,7 @@ using System.Threading.Tasks;
 using Microsoft.Extensions.Caching.Memory;
 using Microsoft.Extensions.Logging;
 using Moq;
+using PocketMonsters.PokeDex;
 using PocketMonsters.TranslateApi;
 using Shouldly;
 using Xunit;
@@ -127,7 +128,7 @@ namespace PocketMonsters.Tests
         [InlineData("")]
         public async Task ReturnEmptyDescription_IfInvalidDescriptionSupplied(string description)
         {
-            var emptyPokemon = new PokemonDetails
+            var emptyPokemon = new Pokemon
             {
                 Name = "john",
                 Description = description
@@ -142,7 +143,7 @@ namespace PocketMonsters.Tests
         [InlineData("")]
         public async Task ThrowException_IfInvalidPokemonNameSupplied(string name)
         {
-            var namelessOne = new PokemonDetails
+            var namelessOne = new Pokemon
             {
                 Name = name,
                 Description = string.Empty
@@ -200,9 +201,9 @@ namespace PocketMonsters.Tests
                 .ReturnsAsync(new TranslatedResponse {TranslatedText = yodaTranslation});
         }
 
-        private static PokemonDetails Pokemon(string name, string description, string habitat, bool isLegendary)
+        private static Pokemon Pokemon(string name, string description, string habitat, bool isLegendary)
         {
-            return new PokemonDetails
+            return new Pokemon
             {
                 Name = name,
                 Description = description,

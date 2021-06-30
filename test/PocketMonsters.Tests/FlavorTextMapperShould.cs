@@ -2,6 +2,7 @@ using Xunit;
 using Shouldly;
 using PocketMonsters.PokeApi;
 using System;
+using PocketMonsters.PokeDex;
 
 namespace PocketMonsters.Tests
 {

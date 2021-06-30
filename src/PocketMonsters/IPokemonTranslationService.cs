@@ -4,6 +4,6 @@ namespace PocketMonsters
 {
     public interface IPokemonTranslationService
     {
-        Task<string> TranslatePokemonDescription(PokemonDetails pokemonDetails);
+        Task<string> TranslatePokemonDescription(Pokemon pokemon);
     }
 }

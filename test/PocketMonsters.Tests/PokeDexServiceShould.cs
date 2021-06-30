@@ -5,6 +5,7 @@ using Shouldly;
 using Moq;
 using PocketMonsters.PokeApi;
 using Microsoft.Extensions.Logging;
+using PocketMonsters.PokeDex;
 
 namespace PocketMonsters.Tests
 {

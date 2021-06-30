@@ -6,6 +6,7 @@ using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
 using Microsoft.OpenApi.Models;
 using PocketMonsters.PokeApi;
+using PocketMonsters.PokeDex;
 using PocketMonsters.TranslateApi;
 
 namespace PocketMonsters

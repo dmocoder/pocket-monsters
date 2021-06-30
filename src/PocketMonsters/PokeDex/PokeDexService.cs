@@ -1,9 +1,9 @@
-using System.Threading.Tasks;
 using System;
-using PocketMonsters.PokeApi;
+using System.Threading.Tasks;
 using Microsoft.Extensions.Logging;
+using PocketMonsters.PokeApi;
 
-namespace PocketMonsters
+namespace PocketMonsters.PokeDex
 {
     public class PokeDexService : IPokeDexService
     {
@@ -16,6 +16,14 @@ namespace PocketMonsters
             _logger = logger ?? throw new ArgumentNullException(nameof(logger));
         }
         
+        /// <summary>
+        /// Returns English language details for the Pokemon if it is a valid Pokemon.
+        /// </summary>
+        /// <param name="pokemonName"></param>
+        /// <returns>
+        /// PokemonDetails: An object containing details surrounding the Pokemon including description
+        /// PokemonNotFound: Result type indicating that the Pokemon could not be found using the external lookup service 
+        /// </returns>
         public async Task<IPokemonDetailsResponse> GetPokemonDetails(string pokemonName)
         {
             var correctedName = pokemonName.ToLowerInvariant();

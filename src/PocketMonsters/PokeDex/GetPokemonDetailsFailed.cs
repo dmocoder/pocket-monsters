@@ -1,4 +1,4 @@
-namespace PocketMonsters
+namespace PocketMonsters.PokeDex
 {
     public record GetPokemonDetailsFailed : IPokemonDetailsResponse
     { }

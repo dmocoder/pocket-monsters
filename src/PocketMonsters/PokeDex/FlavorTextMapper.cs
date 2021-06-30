@@ -1,10 +1,16 @@
 using System.Collections.Generic;
 using PocketMonsters.PokeApi;
 
-namespace PocketMonsters
+namespace PocketMonsters.PokeDex
 {
     public static class FlavorTextMapper
     {
+        /// <summary>
+        /// Maps the flavor text entries returned by PokeApi
+        /// </summary>
+        /// <param name="flavorTextEntries"></param>
+        /// <param name="flavorText"></param>
+        /// <returns>English language flavo(u)r text with escaped characters removed</returns>
         public static bool TryMap(IEnumerable<FlavorTextEntry> flavorTextEntries, out string flavorText)
         {
             flavorText = null;

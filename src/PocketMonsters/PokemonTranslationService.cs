@@ -30,23 +30,26 @@ namespace PocketMonsters
         /// <summary>
         /// Provides the translation of a supplied Pokemon's description
         /// </summary>
-        /// <param name="pokemonDetails">The supplied Pokemon Details</param>
-        /// <returns></returns>
-        /// <exception cref="ArgumentException">Pokemon Name must be valid</exception>
-        public async Task<string> TranslatePokemonDescription(PokemonDetails pokemonDetails)
+        /// <param name="pokemon">The supplied Pokemon Details</param>
+        /// <returns>
+        /// Translated description string of the supplied pokemon.
+        /// If the Pokemon description cannot be translated then the supplied description will be returned.
+        /// </returns>
+        /// <exception cref="ArgumentException">Pokemon Name must be empty and not null</exception>
+        public async Task<string> TranslatePokemonDescription(Pokemon pokemon)
         {
-            if (string.IsNullOrEmpty(pokemonDetails?.Name))
-                throw new ArgumentException($"{nameof(pokemonDetails.Name)} cannot be null or empty");
+            if (string.IsNullOrEmpty(pokemon?.Name))
+                throw new ArgumentException($"{nameof(pokemon.Name)} cannot be null or empty");
 
-            if (string.IsNullOrEmpty(pokemonDetails.Description))
+            if (string.IsNullOrEmpty(pokemon.Description))
                 return string.Empty;
             
-            return await _memoryCache.GetOrCreateAsync(pokemonDetails.Name, async entry =>
+            return await _memoryCache.GetOrCreateAsync(pokemon.Name, async entry =>
             {
                 if (entry.SlidingExpiration != null)
                     entry.SlidingExpiration = TimeSpan.FromMinutes(CacheDurationMin);
                 
-                return await Translate(pokemonDetails.Description, pokemonDetails.Habitat, pokemonDetails.IsLegendary);
+                return await Translate(pokemon.Description, pokemon.Habitat, pokemon.IsLegendary);
             });
         }
 
