@@ -1,6 +1,6 @@
 namespace PocketMonsters.PokeApi
 {
-    public class PokeApiOptions {
-        public string BaseUrl { get; set; }
+    public record PokeApiOptions {
+        public string BaseUrl { get; init; }
     }
 }

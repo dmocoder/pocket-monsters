@@ -4,6 +4,6 @@ namespace PocketMonsters.PokeApi
 {
     public record UnsuccessfulResponse : IPokeApiClientResponse
     {
-        public HttpStatusCode HttpStatusCode { get; set; }
+        public HttpStatusCode HttpStatusCode { get; init; }
     }
 }

@@ -1,6 +1,7 @@
 using System;
 using System.Threading.Tasks;
 using Microsoft.Extensions.Caching.Memory;
+using Microsoft.Extensions.Logging;
 using Moq;
 using PocketMonsters.TranslateApi;
 using Shouldly;
@@ -10,7 +11,7 @@ namespace PocketMonsters.Tests
 {
     public class PokemonTranslationServiceShould
     {
-        private PokemonTranslationService _translationService;
+        private readonly PokemonTranslationService _translationService;
         private readonly Mock<IShakespeareTranslator> _shakespeareTranslator;
         private readonly Mock<IYodaTranslator> _yodaTranslator;
         private readonly IMemoryCache _memoryCache;
@@ -21,7 +22,11 @@ namespace PocketMonsters.Tests
             
             _shakespeareTranslator = new Mock<IShakespeareTranslator>();
             _yodaTranslator = new Mock<IYodaTranslator>();
-            _translationService = new PokemonTranslationService(_shakespeareTranslator.Object, _yodaTranslator.Object, _memoryCache);
+            _translationService = new PokemonTranslationService(
+                    _shakespeareTranslator.Object, 
+                    _yodaTranslator.Object, 
+                    _memoryCache, 
+                    Mock.Of<ILogger<PokemonTranslationService>>());
         }
 
         [Fact]

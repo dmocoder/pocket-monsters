@@ -7,8 +7,8 @@ namespace PocketMonsters
 {
     public class PokeDexService : IPokeDexService
     {
-        IPokeApiClient _pokeApiClient;
-        ILogger _logger;
+        private readonly IPokeApiClient _pokeApiClient;
+        private readonly ILogger _logger;
 
         public PokeDexService(IPokeApiClient pokeApiClient, ILogger<PokeDexService> logger)
         {   
@@ -26,14 +26,22 @@ namespace PocketMonsters
                 {
                     case PokemonSpeciesResponse species:
                         return Map(correctedName, species);
+                    case UnsuccessfulResponse unsuccessful:
+                    {
+                        _logger.LogError("Unable to retrieve pokemon details for {PokemonName}: {HttpErrorCode}", 
+                            pokemonName, 
+                            unsuccessful.HttpStatusCode);
+                        return new PokemonNotFound();
+                    }
+                    case PokemonSpeciesNotFoundResponse notFound:
                     default:
                         return new PokemonNotFound();
                 } 
             }
             catch (Exception ex)
             {
-                _logger.LogError("An error occurred retrieving details for {PokemonName}", ex, pokemonName);
-                return new ActionFailed();
+                _logger.LogError(ex, "An error occurred retrieving details for {PokemonName}", pokemonName);
+                return new GetPokemonDetailsFailed();
             }
         }
 

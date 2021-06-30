@@ -8,14 +8,9 @@ using Newtonsoft.Json.Serialization;
 
 namespace PocketMonsters.TranslateApi 
 {
-    //TODO cleanup
-    //400 (null/bad request)
-    //404 (not found)
-    //429 (2 many requests)
-
     public class FunTranslateApiClient : IShakespeareTranslator, IYodaTranslator
     {
-        private static readonly JsonSerializerSettings _serializerSettings = new JsonSerializerSettings
+        private static readonly JsonSerializerSettings SerializerSettings = new JsonSerializerSettings
         {
             ContractResolver = new DefaultContractResolver
             {
@@ -31,13 +26,12 @@ namespace PocketMonsters.TranslateApi
         public FunTranslateApiClient(HttpClient client, TranslateApiOptions options)
         {
             _client = client ?? throw new ArgumentNullException(nameof(client));
-            _client.BaseAddress = new Uri(options?.BaseUrl) ?? throw new ArgumentNullException(nameof(options.BaseUrl));
+            _client.BaseAddress = new Uri(options?.BaseUrl ?? throw new ArgumentNullException(nameof(options.BaseUrl)));
 
             _shakespeareEndpoint = options?.ShakespeareEndpoint ?? "shakespeare.json";
             _yodaEndpoint = options?.YodaEndpoint ?? "yoda.json";
 
-            _serializer = JsonSerializer.Create(_serializerSettings);
-
+            _serializer = JsonSerializer.Create(SerializerSettings);
         }
 
         public async Task<ITranslateResponse> TranslateToShakespearean(string text)
@@ -56,31 +50,28 @@ namespace PocketMonsters.TranslateApi
             
             try
             {
-                var requestBody = JsonConvert.SerializeObject(translationRequest, _serializerSettings);
+                var requestBody = JsonConvert.SerializeObject(translationRequest, SerializerSettings);
                 var httpContent = new StringContent(requestBody, Encoding.UTF8, "application/json");
 
                 var response = await _client.PostAsync(endpoint, httpContent);
 
                 if (response.StatusCode == System.Net.HttpStatusCode.OK)
                 {
-                    using (var stream = await response.Content.ReadAsStreamAsync())
-                    using(var sr = new StreamReader(stream))
-                    using (var reader = new JsonTextReader(sr))
-                    {
-                        var translated = _serializer.Deserialize<TranslateApiSuccessResponse>(reader);
+                    await using var stream = await response.Content.ReadAsStreamAsync();
+                    using var sr = new StreamReader(stream);
+                    using var reader = new JsonTextReader(sr);
+                    var translated = _serializer.Deserialize<TranslateApiSuccessResponse>(reader);
                         
-                        if(translated?.Success?.Total > 0)
-                            return new TranslatedResponse{ TranslatedText = translated?.Contents?.Translated };
+                    if(translated?.Success?.Total > 0)
+                        return new TranslatedResponse{ TranslatedText = translated?.Contents?.Translated };
                         
-                        return new TranslationFailedResponse("unknown", "No translations available");
-                    }
+                    return new TranslationFailedResponse("unknown", "No translations available");
                 }
 
                 return new TranslationFailedResponse(response.StatusCode.ToString(), response.ReasonPhrase);
             }
             catch(Exception ex)
             {
-                //TODO log
                 return new TranslationFailedResponse("unknown", ex.Message);
             }
         }
@@ -92,25 +83,18 @@ namespace PocketMonsters.TranslateApi
 
         private record TranslateApiSuccessResponse
         {
-            public SuccessBody Success { get; set;}
-            public ContentsBody Contents { get; set; }
+            public SuccessBody Success { get; init;}
+            public ContentsBody Contents { get; init; }
 
             public record SuccessBody
             {
-                public int Total { get; set; }
+                public int Total { get; init; }
             }
 
             public record ContentsBody 
             {
-                public string Translated { get; set; }
-                //public string Text { get; set; }
-                //public string Translation { get; set; }
+                public string Translated { get; init; }
             }
         }
-
-        // private record TranslationErrorResponse 
-        // {
-        //     public string ErrorMessage { get; init;}
-        // }
     }
 }

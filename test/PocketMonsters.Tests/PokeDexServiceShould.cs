@@ -10,8 +10,8 @@ namespace PocketMonsters.Tests
 {
     public class PokeDexServiceShould
     {
-        Mock<IPokeApiClient> _pokeApiClient;
-        PokeDexService _pokeDexService;
+        private readonly Mock<IPokeApiClient> _pokeApiClient;
+        private readonly PokeDexService _pokeDexService;
 
         public PokeDexServiceShould()
         {
@@ -92,7 +92,7 @@ namespace PocketMonsters.Tests
             var result = await _pokeDexService.GetPokemonDetails(pokemonArg);
 
             //assert
-            var details = result.ShouldBeOfType<ActionFailed>();
+            var details = result.ShouldBeOfType<GetPokemonDetailsFailed>();
         }
 
         [Fact]
@@ -115,8 +115,7 @@ namespace PocketMonsters.Tests
             {
                 FlavorTextEntries = new []{ new FlavorTextEntry {
                     FlavorText = flavorText,
-                    Language = new Link{ Name = language},
-                    Version = new Link{ Name = "best"}
+                    Language = new Link{ Name = language}
                  }},
                  Habitat = new Link{ Name = habitat},
                  IsLegendary = isLegendary

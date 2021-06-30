@@ -1,11 +1,5 @@
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
-using Microsoft.AspNetCore.HttpsPolicy;
-using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
@@ -54,13 +48,14 @@ namespace PocketMonsters
             services.AddSingleton<FunTranslateApiClient>();
             services.AddSingleton<IShakespeareTranslator>(x => x.GetRequiredService<FunTranslateApiClient>());
             services.AddSingleton<IYodaTranslator>(x => x.GetRequiredService<FunTranslateApiClient>());
-
             services.AddSingleton<IPokemonTranslationService, PokemonTranslationService>();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
-        public void Configure(IApplicationBuilder app, IWebHostEnvironment env)
+        public void Configure(IApplicationBuilder app, IWebHostEnvironment env, ILogger<Startup> logger)
         {
+            logger.LogInformation("Starting up application...");
+            
             if (env.IsDevelopment())
             {
                 app.UseDeveloperExceptionPage();
