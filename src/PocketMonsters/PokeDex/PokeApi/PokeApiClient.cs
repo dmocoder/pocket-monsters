@@ -28,6 +28,11 @@ namespace PocketMonsters.PokeDex.PokeApi
             _serializer = JsonSerializer.Create(SerializerSettings);
         }
 
+        /// <summary>
+        /// Calls into the PokeApi to get Pokemon Species data
+        /// </summary>
+        /// <param name="pokemonName"></param>
+        /// <returns></returns>
         public async Task<IPokeApiClientResponse> GetPokemonSpecies(string pokemonName)
         {
             var response = await _httpClient.GetAsync(pokemonName);

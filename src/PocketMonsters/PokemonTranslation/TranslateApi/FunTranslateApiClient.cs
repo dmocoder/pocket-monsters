@@ -34,11 +34,21 @@ namespace PocketMonsters.PokemonTranslation.TranslateApi
             _serializer = JsonSerializer.Create(SerializerSettings);
         }
 
+        /// <summary>
+        /// Calls into the FunTranslate API to get a Shakespearean translation of the supplied text
+        /// </summary>
+        /// <param name="text"></param>
+        /// <returns></returns>
         public async Task<ITranslateResponse> TranslateToShakespearean(string text)
         {
             return await GetTranslation(_shakespeareEndpoint, text);
         } 
 
+        /// <summary>
+        /// Calls into the FunTranslate API to get a Yoda-ish translation of the supplied text
+        /// </summary>
+        /// <param name="text"></param>
+        /// <returns></returns>
         public async Task<ITranslateResponse> TranslateToYodaSpeak(string text)
         {
             return await GetTranslation(_yodaEndpoint, text);

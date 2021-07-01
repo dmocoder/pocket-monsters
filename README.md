@@ -85,3 +85,10 @@ The Api uses HTTPS developer certificates and for a production application a bet
 
 #### Add a Simulator
 Currently tests call into the actual PokeApi and Translation services. It might be better long term to introduce a simulator that mocks their responses.
+
+#### Version Headers
+In the response dto I have added a version field. In production this would ideally be added via middleware to the response header instead of a body field.
+
+#### Swagger Documentation
+For a reason I wasn't able to figure out in time, the XML docs are not picked up by the Swagger documentation, and as such the swagger documentation is underwhelming.
+For a production application this would be resolved so that each response type had good documentation.

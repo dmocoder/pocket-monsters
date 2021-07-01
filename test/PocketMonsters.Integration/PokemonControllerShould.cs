@@ -76,7 +76,7 @@ namespace PocketMonsters.Integration
         }
 
         [Fact]
-        public async Task ReturnPokeDescription_WhenTranslationClientsFail()
+        public async Task ReturnOriginalDescription_WhenTranslationClientsFail()
         {
             var hostBuilder = new HostBuilder()
                 .ConfigureWebHost(wh =>
