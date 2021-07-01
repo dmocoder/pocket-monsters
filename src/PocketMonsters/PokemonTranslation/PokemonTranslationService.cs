@@ -59,8 +59,16 @@ namespace PocketMonsters.PokemonTranslation
 
             try
             {
-                if (await translate.Invoke(description) is TranslatedResponse translated)
+                var translatedResponse = await translate.Invoke(description);
+                if (translatedResponse is TranslatedResponse translated)
+                {
                     return translated.TranslatedText;
+                }
+
+                if (translatedResponse is TranslationFailedResponse translationFailedResponse)
+                {
+                    _logger.LogWarning($"Translation failed for Pokemon: {translationFailedResponse.ErrorMessage}");
+                }
             }
             catch (Exception ex)
             {
