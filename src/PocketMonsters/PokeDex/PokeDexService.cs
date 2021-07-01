@@ -65,7 +65,7 @@ namespace PocketMonsters.PokeDex
             {
                 Name = name,
                 Description = flavorText,
-                Habitat = speciesResponse?.Habitat.Name,
+                Habitat = speciesResponse?.Habitat?.Name,
                 IsLegendary = speciesResponse?.IsLegendary ?? false
             };
         }
