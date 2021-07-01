@@ -24,7 +24,7 @@ namespace PocketMonsters
             services.AddControllers();
             services.AddSwaggerGen(c =>
             {
-                c.SwaggerDoc("v1", new OpenApiInfo { Title = "PocketMonsters", Version = "v1" });
+                c.SwaggerDoc("v1", new OpenApiInfo {Title = "PocketMonsters", Version = "v1"});
             });
 
             services.RegisterPokeDex(Configuration);
@@ -35,7 +35,7 @@ namespace PocketMonsters
         public void Configure(IApplicationBuilder app, IWebHostEnvironment env, ILogger<Startup> logger)
         {
             logger.LogInformation("Starting up application...");
-            
+
             if (env.IsDevelopment())
             {
                 app.UseDeveloperExceptionPage();

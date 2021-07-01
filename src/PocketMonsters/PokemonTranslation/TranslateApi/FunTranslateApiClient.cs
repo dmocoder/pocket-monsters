@@ -1,16 +1,17 @@
 using System;
 using System.IO;
+using System.Net;
 using System.Net.Http;
 using System.Text;
 using System.Threading.Tasks;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Serialization;
 
-namespace PocketMonsters.PokemonTranslation.TranslateApi 
+namespace PocketMonsters.PokemonTranslation.TranslateApi
 {
     public class FunTranslateApiClient : IShakespeareTranslator, IYodaTranslator
     {
-        private static readonly JsonSerializerSettings SerializerSettings = new JsonSerializerSettings
+        private static readonly JsonSerializerSettings SerializerSettings = new()
         {
             ContractResolver = new DefaultContractResolver
             {
@@ -18,10 +19,11 @@ namespace PocketMonsters.PokemonTranslation.TranslateApi
             }
         };
 
-        private readonly string _shakespeareEndpoint;
-        private readonly string _yodaEndpoint;
         private readonly HttpClient _client;
         private readonly JsonSerializer _serializer;
+
+        private readonly string _shakespeareEndpoint;
+        private readonly string _yodaEndpoint;
 
         public FunTranslateApiClient(HttpClient client, TranslateApiOptions options)
         {
@@ -35,17 +37,17 @@ namespace PocketMonsters.PokemonTranslation.TranslateApi
         }
 
         /// <summary>
-        /// Calls into the FunTranslate API to get a Shakespearean translation of the supplied text
+        ///     Calls into the FunTranslate API to get a Shakespearean translation of the supplied text
         /// </summary>
         /// <param name="text"></param>
         /// <returns></returns>
         public async Task<ITranslateResponse> TranslateToShakespearean(string text)
         {
             return await GetTranslation(_shakespeareEndpoint, text);
-        } 
+        }
 
         /// <summary>
-        /// Calls into the FunTranslate API to get a Yoda-ish translation of the supplied text
+        ///     Calls into the FunTranslate API to get a Yoda-ish translation of the supplied text
         /// </summary>
         /// <param name="text"></param>
         /// <returns></returns>
@@ -56,8 +58,8 @@ namespace PocketMonsters.PokemonTranslation.TranslateApi
 
         private async Task<ITranslateResponse> GetTranslation(string endpoint, string textToTranslate)
         {
-            var translationRequest = new TranslateApiRequest{ Text = textToTranslate };
-            
+            var translationRequest = new TranslateApiRequest {Text = textToTranslate};
+
             try
             {
                 var requestBody = JsonConvert.SerializeObject(translationRequest, SerializerSettings);
@@ -65,27 +67,27 @@ namespace PocketMonsters.PokemonTranslation.TranslateApi
 
                 var response = await _client.PostAsync(endpoint, httpContent);
 
-                if (response.StatusCode == System.Net.HttpStatusCode.OK)
+                if (response.StatusCode == HttpStatusCode.OK)
                 {
                     await using var stream = await response.Content.ReadAsStreamAsync();
                     using var sr = new StreamReader(stream);
                     using var reader = new JsonTextReader(sr);
                     var translated = _serializer.Deserialize<TranslateApiSuccessResponse>(reader);
-                        
-                    if(translated?.Success?.Total > 0)
-                        return new TranslatedResponse{ TranslatedText = translated?.Contents?.Translated };
-                        
+
+                    if (translated?.Success?.Total > 0)
+                        return new TranslatedResponse {TranslatedText = translated?.Contents?.Translated};
+
                     return new TranslationFailedResponse("unknown", "No translations available");
                 }
 
                 return new TranslationFailedResponse(response.StatusCode.ToString(), response.ReasonPhrase);
             }
-            catch(Exception ex)
+            catch (Exception ex)
             {
                 return new TranslationFailedResponse("unknown", ex.Message);
             }
         }
-        
+
         private record TranslateApiRequest
         {
             public string Text { get; init; }
@@ -93,7 +95,7 @@ namespace PocketMonsters.PokemonTranslation.TranslateApi
 
         private record TranslateApiSuccessResponse
         {
-            public SuccessBody Success { get; init;}
+            public SuccessBody Success { get; init; }
             public ContentsBody Contents { get; init; }
 
             public record SuccessBody
@@ -101,7 +103,7 @@ namespace PocketMonsters.PokemonTranslation.TranslateApi
                 public int Total { get; init; }
             }
 
-            public record ContentsBody 
+            public record ContentsBody
             {
                 public string Translated { get; init; }
             }

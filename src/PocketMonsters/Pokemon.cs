@@ -4,15 +4,9 @@ namespace PocketMonsters
 {
     public record Pokemon
     {
-        public string Name { get; init; }
-        public string Description { get; init; }
-        public string Habitat { get; init; }
-        public bool IsLegendary { get; init; }
-
-        public string ApiVersion => "v1"; 
-        
         public Pokemon()
-        { }
+        {
+        }
 
         public Pokemon(PokemonDetails pokemonDetails)
         {
@@ -21,5 +15,12 @@ namespace PocketMonsters
             Habitat = pokemonDetails.Habitat;
             IsLegendary = pokemonDetails.IsLegendary;
         }
+
+        public string Name { get; init; }
+        public string Description { get; init; }
+        public string Habitat { get; init; }
+        public bool IsLegendary { get; init; }
+
+        public string ApiVersion => "v1";
     }
 }

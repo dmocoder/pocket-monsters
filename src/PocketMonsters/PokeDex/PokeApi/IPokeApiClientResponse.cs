@@ -1,4 +1,6 @@
 namespace PocketMonsters.PokeDex.PokeApi
 {
-    public interface IPokeApiClientResponse { } 
+    public interface IPokeApiClientResponse
+    {
+    }
 }

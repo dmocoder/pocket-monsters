@@ -3,7 +3,6 @@ using System.Threading.Tasks;
 using Microsoft.Extensions.Caching.Memory;
 using Microsoft.Extensions.Logging;
 using Moq;
-using PocketMonsters.PokeDex;
 using PocketMonsters.PokemonTranslation;
 using PocketMonsters.PokemonTranslation.TranslateApi;
 using Shouldly;
@@ -14,22 +13,22 @@ namespace PocketMonsters.Tests
     [Trait("Category", "Unit")]
     public class PokemonTranslationServiceShould
     {
-        private readonly PokemonTranslationService _translationService;
-        private readonly Mock<IShakespeareTranslator> _shakespeareTranslator;
-        private readonly Mock<IYodaTranslator> _yodaTranslator;
         private readonly IMemoryCache _memoryCache;
-        
+        private readonly Mock<IShakespeareTranslator> _shakespeareTranslator;
+        private readonly PokemonTranslationService _translationService;
+        private readonly Mock<IYodaTranslator> _yodaTranslator;
+
         public PokemonTranslationServiceShould()
         {
             _memoryCache ??= new MemoryCache(new MemoryCacheOptions());
-            
+
             _shakespeareTranslator = new Mock<IShakespeareTranslator>();
             _yodaTranslator = new Mock<IYodaTranslator>();
             _translationService = new PokemonTranslationService(
-                    _shakespeareTranslator.Object, 
-                    _yodaTranslator.Object, 
-                    _memoryCache, 
-                    Mock.Of<ILogger<PokemonTranslationService>>());
+                _shakespeareTranslator.Object,
+                _yodaTranslator.Object,
+                _memoryCache,
+                Mock.Of<ILogger<PokemonTranslationService>>());
         }
 
         [Fact]
@@ -42,14 +41,14 @@ namespace PocketMonsters.Tests
             _shakespeareTranslator
                 .Setup(x => x.TranslateToShakespearean(It.IsAny<string>()))
                 .ReturnsAsync(new TranslationFailedResponse("error", "too bad"));
-            
+
             //act
             var response = await _translationService.TranslatePokemonDescription(pokemonDetails);
-            
+
             //assert
             response.ShouldBe(originalDescription);
         }
-        
+
         [Fact]
         public async Task ReturnYodaTranslation_IfHabitatCave()
         {
@@ -59,16 +58,17 @@ namespace PocketMonsters.Tests
             var yodaTranslation = "small green mouse it is, talk funny it does";
             var pokemonDetails = Pokemon("rat-boy", originalDescription, "cave", false);
 
-            SetupMockTranslations(originalDescription, shakespeareTranslation, _shakespeareTranslator, yodaTranslation, _yodaTranslator);
-            
+            SetupMockTranslations(originalDescription, shakespeareTranslation, _shakespeareTranslator, yodaTranslation,
+                _yodaTranslator);
+
             //act
             var response = await _translationService.TranslatePokemonDescription(pokemonDetails);
-            
+
             //assert
             response.ShouldBe(yodaTranslation);
             response.ShouldNotBe(shakespeareTranslation);
         }
-        
+
         [Fact]
         public async Task ReturnYodaTranslation_IfLegendary()
         {
@@ -78,16 +78,17 @@ namespace PocketMonsters.Tests
             var yodaTranslation = "many followers has the pokemon, legendary is she";
             var pokemonDetails = Pokemon("ms. legend", originalDescription, "instagram", true);
 
-            SetupMockTranslations(originalDescription, shakespeareTranslation, _shakespeareTranslator, yodaTranslation, _yodaTranslator);
-            
+            SetupMockTranslations(originalDescription, shakespeareTranslation, _shakespeareTranslator, yodaTranslation,
+                _yodaTranslator);
+
             //act
             var response = await _translationService.TranslatePokemonDescription(pokemonDetails);
-            
+
             //assert
             response.ShouldBe(yodaTranslation);
             response.ShouldNotBe(shakespeareTranslation);
         }
-        
+
         [Fact]
         public async Task ReturnShakespeareTranslation_WhenNotLegendaryOrCaveHabitat()
         {
@@ -96,12 +97,13 @@ namespace PocketMonsters.Tests
             var shakespeareTranslation = "a humdrum pokemon that doth dwell within an abode most tiny";
             var yodaTranslation = "a boring pokemon, tiny house, he has";
             var pokemonDetails = Pokemon("royce", originalDescription, "shoreditch", false);
-            
-            SetupMockTranslations(originalDescription, shakespeareTranslation, _shakespeareTranslator, yodaTranslation, _yodaTranslator);
-            
+
+            SetupMockTranslations(originalDescription, shakespeareTranslation, _shakespeareTranslator, yodaTranslation,
+                _yodaTranslator);
+
             //act
             var response = await _translationService.TranslatePokemonDescription(pokemonDetails);
-            
+
             //assert
             response.ShouldBe(shakespeareTranslation);
             response.ShouldNotBe(yodaTranslation);
@@ -135,7 +137,7 @@ namespace PocketMonsters.Tests
                 Name = "john",
                 Description = description
             };
-            
+
             (await _translationService.TranslatePokemonDescription(emptyPokemon))
                 .ShouldBeEmpty();
         }
@@ -162,17 +164,17 @@ namespace PocketMonsters.Tests
             var originalDescription = "cool description A";
             var alternativeDescription = "alternative Description B";
             var translatedOriginal = "the coolest of all the 'mon";
-            
+
             var pokemon = Pokemon(pokemonName, "cool description A", "the beach", false);
             var pokemonRepeat = Pokemon(pokemonName, "another description", "anywhere", false);
-            
+
             SetupMockTranslations(
-                originalDescription, 
-                translatedOriginal, 
+                originalDescription,
+                translatedOriginal,
                 _shakespeareTranslator,
                 "very cool, he is",
                 _yodaTranslator);
-            
+
             SetupMockTranslations(
                 alternativeDescription,
                 "cooler than thou, for certain",
@@ -188,10 +190,10 @@ namespace PocketMonsters.Tests
         }
 
         private static void SetupMockTranslations(
-            string originalDescription, 
-            string shakespeareTranslation, 
-            Mock<IShakespeareTranslator> shakespeareTranslator, 
-            string yodaTranslation, 
+            string originalDescription,
+            string shakespeareTranslation,
+            Mock<IShakespeareTranslator> shakespeareTranslator,
+            string yodaTranslation,
             Mock<IYodaTranslator> yodaTranslator)
         {
             shakespeareTranslator
@@ -205,11 +207,11 @@ namespace PocketMonsters.Tests
 
         private static Pokemon Pokemon(string name, string description, string habitat, bool isLegendary)
         {
-            return new Pokemon
+            return new()
             {
                 Name = name,
                 Description = description,
-                Habitat =  habitat,
+                Habitat = habitat,
                 IsLegendary = isLegendary
             };
         }

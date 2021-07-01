@@ -14,12 +14,12 @@ namespace PocketMonsters
             var pokeApiOptions = new PokeApiOptions();
             configuration.GetSection("PokeApi").Bind(pokeApiOptions);
             services.AddSingleton(pokeApiOptions);
-            
+
             services.AddHttpClient<PokeApiClient>();
             services.AddSingleton<IPokeApiClient, PokeApiClient>();
             services.AddSingleton<IPokeDexService, PokeDexService>();
         }
-        
+
         public static void RegisterPokemonTranslator(this IServiceCollection services, IConfiguration configuration)
         {
             services.AddMemoryCache();
@@ -27,7 +27,7 @@ namespace PocketMonsters
             var translateApiOptions = new TranslateApiOptions();
             configuration.GetSection("TranslateApi").Bind(translateApiOptions);
             services.AddSingleton(translateApiOptions);
-            
+
             services.AddHttpClient<FunTranslateApiClient>();
             services.AddSingleton<FunTranslateApiClient>();
             services.AddSingleton<IShakespeareTranslator>(x => x.GetRequiredService<FunTranslateApiClient>());

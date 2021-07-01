@@ -10,7 +10,7 @@ namespace PocketMonsters.PokeDex.PokeApi
 {
     public class PokeApiClient : IPokeApiClient
     {
-        private static readonly JsonSerializerSettings SerializerSettings = new JsonSerializerSettings
+        private static readonly JsonSerializerSettings SerializerSettings = new()
         {
             ContractResolver = new DefaultContractResolver
             {
@@ -29,14 +29,14 @@ namespace PocketMonsters.PokeDex.PokeApi
         }
 
         /// <summary>
-        /// Calls into the PokeApi to get Pokemon Species data
+        ///     Calls into the PokeApi to get Pokemon Species data
         /// </summary>
         /// <param name="pokemonName"></param>
         /// <returns></returns>
         public async Task<IPokeApiClientResponse> GetPokemonSpecies(string pokemonName)
         {
             var response = await _httpClient.GetAsync(pokemonName);
-            
+
             switch (response.StatusCode)
             {
                 case HttpStatusCode.NotFound:

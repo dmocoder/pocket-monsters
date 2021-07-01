@@ -1,14 +1,14 @@
 using System.Net;
-using Xunit;
-using Microsoft.AspNetCore.TestHost;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Hosting;
+using Microsoft.AspNetCore.TestHost;
 using Microsoft.Extensions.Hosting;
 using Shouldly;
+using Xunit;
 
-namespace PocketMonsters.Integration 
+namespace PocketMonsters.Integration
 {
-    [Trait("Category","Integration")]
+    [Trait("Category", "Integration")]
     public class HealthControllerShould
     {
         [Fact]
@@ -18,7 +18,7 @@ namespace PocketMonsters.Integration
                 .ConfigureWebHost(wh =>
                 {
                     wh.UseTestServer();
-                    wh.UseStartup<PocketMonsters.Startup>();
+                    wh.UseStartup<Startup>();
                 });
 
             var host = await hostBuilder.StartAsync();

@@ -1,13 +1,12 @@
-using Xunit;
 using System;
 using System.Net;
 using System.Threading.Tasks;
-using Microsoft.AspNetCore.Http;
-using Shouldly;
-using Moq;
 using Microsoft.Extensions.Logging;
+using Moq;
 using PocketMonsters.PokeDex;
 using PocketMonsters.PokeDex.PokeApi;
+using Shouldly;
+using Xunit;
 
 namespace PocketMonsters.Tests
 {
@@ -43,8 +42,8 @@ namespace PocketMonsters.Tests
             //setup
             var pokemonArg = "coder-chu";
             var flavorText = "a really cool\nkind of dude\n";
-            SetupPokeApi(pokemonArg, _pokeApiClient, flavorText: flavorText);
-            
+            SetupPokeApi(pokemonArg, _pokeApiClient, flavorText);
+
             //act
             var result = await _pokeDexService.GetPokemonDetails(pokemonArg);
 
@@ -98,7 +97,7 @@ namespace PocketMonsters.Tests
             //assert
             result.ShouldBeOfType<GetPokemonDetailsFailed>();
         }
-        
+
         [Fact]
         public async Task ReturnGetPokemonDetailsFailed_IfPokeApiReturns429()
         {
@@ -128,16 +127,22 @@ namespace PocketMonsters.Tests
             var details = result.ShouldBeOfType<PokemonNotFound>();
         }
 
-        private static void SetupPokeApi(string pokemonName, Mock<IPokeApiClient> mock, string flavorText = "a default pokemon", bool isLegendary = false, string habitat = "caves", string language = "en")
+        private static void SetupPokeApi(string pokemonName, Mock<IPokeApiClient> mock,
+            string flavorText = "a default pokemon", bool isLegendary = false, string habitat = "caves",
+            string language = "en")
         {
             var pokemonSpeciesStub = new PokemonSpeciesResponse
             {
-                FlavorTextEntries = new []{ new FlavorTextEntry {
-                    FlavorText = flavorText,
-                    Language = new Link{ Name = language}
-                 }},
-                 Habitat = new Link{ Name = habitat},
-                 IsLegendary = isLegendary
+                FlavorTextEntries = new[]
+                {
+                    new FlavorTextEntry
+                    {
+                        FlavorText = flavorText,
+                        Language = new Link {Name = language}
+                    }
+                },
+                Habitat = new Link {Name = habitat},
+                IsLegendary = isLegendary
             };
 
             mock.Setup(x => x.GetPokemonSpecies(pokemonName))

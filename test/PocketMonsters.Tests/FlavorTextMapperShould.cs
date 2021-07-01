@@ -1,8 +1,8 @@
-using Xunit;
-using Shouldly;
 using System;
 using PocketMonsters.PokeDex;
 using PocketMonsters.PokeDex.PokeApi;
+using Shouldly;
+using Xunit;
 
 namespace PocketMonsters.Tests
 {
@@ -16,11 +16,11 @@ namespace PocketMonsters.Tests
             var flavorTextEntry = new FlavorTextEntry
             {
                 FlavorText = "i am\nacross many\nlines",
-                Language = new Link{Name = "en"}
+                Language = new Link {Name = "en"}
             };
 
             //act & assert
-            FlavorTextMapper.TryMap(new[]{flavorTextEntry}, out var flavorText).ShouldBeTrue();
+            FlavorTextMapper.TryMap(new[] {flavorTextEntry}, out var flavorText).ShouldBeTrue();
             flavorText.ShouldBe("i am across many lines");
         }
 
@@ -31,11 +31,11 @@ namespace PocketMonsters.Tests
             var flavorTextEntry = new FlavorTextEntry
             {
                 FlavorText = "i am\nacross many\ffeeds",
-                Language = new Link{Name = "en"}
+                Language = new Link {Name = "en"}
             };
 
             //act & assert
-            FlavorTextMapper.TryMap(new[]{flavorTextEntry}, out var flavorText).ShouldBeTrue();
+            FlavorTextMapper.TryMap(new[] {flavorTextEntry}, out var flavorText).ShouldBeTrue();
             flavorText.ShouldBe("i am across many feeds");
         }
 
@@ -46,13 +46,13 @@ namespace PocketMonsters.Tests
             var frenchFlavorTextEntry = new FlavorTextEntry
             {
                 FlavorText = "vrai vrai vrai",
-                Language = new Link { Name = "fr" }
+                Language = new Link {Name = "fr"}
             };
 
             var germanTextEntry = new FlavorTextEntry
             {
                 FlavorText = "ja ja ja",
-                Language = new Link { Name = "dk" }
+                Language = new Link {Name = "dk"}
             };
 
             //act & assert
@@ -73,5 +73,5 @@ namespace PocketMonsters.Tests
             //setup, act & assert
             FlavorTextMapper.TryMap(Array.Empty<FlavorTextEntry>(), out var _).ShouldBeFalse();
         }
-    } 
+    }
 }

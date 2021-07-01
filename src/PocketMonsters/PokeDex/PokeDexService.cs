@@ -7,30 +7,30 @@ namespace PocketMonsters.PokeDex
 {
     public class PokeDexService : IPokeDexService
     {
-        private readonly IPokeApiClient _pokeApiClient;
         private readonly ILogger _logger;
+        private readonly IPokeApiClient _pokeApiClient;
 
         public PokeDexService(IPokeApiClient pokeApiClient, ILogger<PokeDexService> logger)
-        {   
+        {
             _pokeApiClient = pokeApiClient ?? throw new ArgumentNullException(nameof(pokeApiClient));
             _logger = logger ?? throw new ArgumentNullException(nameof(logger));
         }
-        
+
         /// <summary>
-        /// Returns English language details for the Pokemon if it is a valid Pokemon.
+        ///     Returns English language details for the Pokemon if it is a valid Pokemon.
         /// </summary>
         /// <param name="pokemonName"></param>
         /// <returns>
-        /// PokemonDetails: An object containing details surrounding the Pokemon including description
-        /// PokemonNotFound: Result type indicating that the Pokemon could not be found using the external lookup service 
+        ///     PokemonDetails: An object containing details surrounding the Pokemon including description
+        ///     PokemonNotFound: Result type indicating that the Pokemon could not be found using the external lookup service
         /// </returns>
         public async Task<IPokemonDetailsResponse> GetPokemonDetails(string pokemonName)
         {
             var correctedName = pokemonName.ToLowerInvariant();
-            
+
             try
             {
-                switch(await _pokeApiClient.GetPokemonSpecies(correctedName))
+                switch (await _pokeApiClient.GetPokemonSpecies(correctedName))
                 {
                     case PokemonSpeciesResponse species:
                         return Map(correctedName, species);
@@ -41,13 +41,13 @@ namespace PocketMonsters.PokeDex
                     }
                     case UnsuccessfulResponse unsuccessful:
                     {
-                        _logger.LogError("Unable to retrieve pokemon details for {PokemonName}: {HttpErrorCode}", 
+                        _logger.LogError("Unable to retrieve pokemon details for {PokemonName}: {HttpErrorCode}",
                             pokemonName, unsuccessful.HttpStatusCode);
                         return new GetPokemonDetailsFailed();
                     }
                     default:
                         return new GetPokemonDetailsFailed();
-                } 
+                }
             }
             catch (Exception ex)
             {
@@ -60,7 +60,7 @@ namespace PocketMonsters.PokeDex
         {
             if (!FlavorTextMapper.TryMap(speciesResponse?.FlavorTextEntries, out var flavorText))
                 return new PokemonNotFound();
-                
+
             return new PokemonDetails
             {
                 Name = name,
