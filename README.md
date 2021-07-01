@@ -8,9 +8,10 @@ Pocket Monsters is an Api that retrieves Pokemon Details and provides Translatio
 Pocket Monsters requires .NET 5.0 SDK to build & run. The SDK for your Operating System can be downloaded [here](https://dotnet.microsoft.com/download). 
 
 With .NET 5 installed, the Api can be built and run using the following command from the solution directory:
+
 `dotnet run --project ./src/PocketMonsters/PocketMonsters.csproj`
 
-The following url be used to check that the Api is up and running: `http://localhost:5000/health`
+The following url can then be used to check that the Api is Healthy: `http://localhost:5000/health`
 
 ### Using Docker
 The Api can also be hosted using Docker. Navigate to the project folder (./src/PocketMonsters) and run the following:
@@ -23,6 +24,8 @@ Run the image:
 
 `docker run -it --rm -p 5000:80 --name pocketmon_run pocketmon`
 
+As above, the Api health check can again be called using: `http://localhost:5000/health`
+
 ### Https Redirection
 The Api redirects Http requests to Https and uses a HTTPS Development Certificate. 
 When calling the Api there may be a prompt or exception regarding untrusted certificates.
@@ -32,6 +35,47 @@ For Windows and Mac OS this can be alleviated by trusting the certificate using 
 After installing the dotnet SDK the certificate can be trusted using the following command: 
 
 `dotnet dev-certs https --trust`
+
+## Gotta GET 'Em All
+
+Once the Api is running, the description of the Pokemon can be retrieved by calling the Pokemon endpoint using a GET request or by using your browser and supplying the Pokemon name:
+`http://localhost:5000/pokemon/{pokemonName}`
+
+For example:
+
+```
+http://localhost:5000/pokemon/snorlax
+```
+
+Will return:
+
+```
+{
+    "name": "snorlax",
+    "description": "Very lazy. Just eats and sleeps. As its rotund bulk builds, it becomes steadily more slothful.",
+    "habitat": "mountain",
+    "isLegendary": false,
+    "apiVersion": "v1"
+}
+```
+
+### Translated Description
+To retrieve a Pokemon with a translated description, call the Translated endpoint supplying the Pokemon name using your browser or a GET request: `http://localhost:5000/pokemon/translated/{pokemonName}`
+
+For example:
+
+```http://localhost:5000/pokemon/translated/snorlax```
+
+Will return:
+```
+{
+    "name": "snorlax",
+    "description": "Very distemperate. Just engluts and sleeps. As its rotund bulk builds,  't becomes steadily moo slothful.",
+    "habitat": "mountain",
+    "isLegendary": false
+}
+```
+
 
 ## Documentation
 
@@ -57,14 +101,14 @@ To run both Unit & Integration tests and exclude tests against services that are
   To respect REST verbs, Api should be idempotent about each GET endpoint. 
   To facilitate this, the Api should ideally cache the request and response when successful. 
   
-Additionally, the PokeDex service currently uses the first English flavor text returned by the PokeApi. My testing suggested this was always ordered correctly but without ordering in this application there is a chance that a pokemon description may not be idempotent; i.e. the description is different on repeat requests.
+Additionally, the PokeDex service currently uses the first English flavor text returned by the PokeApi. My testing suggested this was always ordered correctly but without ordering in this application there is a chance that a pokemon description request may not be idempotent; i.e. the description is different on repeat requests.
 
 To alleviate this, the service should order flavor text in some order of preference for version so that the same description would be returned for a repeat request. This was not added to this solution because (as mentioned above) the ordering from the PokeApi appeared to be the same with each request, and also given the many pokemon versions available, testing this functionality would require an exhaustive suite of tests that seemed beyond the scope of this project.
 
 #### Validate Pokemon Names when Species endpoint returns 404
 In its current guise, the PokeDex service returns 404 if the call to the PokeApi species endpoint returned 404.
 This assumes that the Pokemon name is the same as the Pokemon Species name, which is not strictly true. 
-A better solution would be to, upon failure, call into the Pokemon endpoint and retrieve the Pokemon Species name from the response body and _then_ call the species endpoint.
+A better solution would be to, upon failure, call into the Pokemon endpoint and retrieve the Pokemon Species name from the response body and _then_ call the species endpoint; only returning 404 if this subsequent check fails.
 
 This was not included in this project as it added additional complexity that for the purpose of this submission seemed out of scope.
 
